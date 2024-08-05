@@ -108,13 +108,6 @@ WSGI_APPLICATION = "xstage_books.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 
 DATABASES = {
     "default": {
@@ -169,24 +162,6 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-@dataclass
-class ENV:
-    def __init__(self) -> None:
-        """
-        Initialize ENV class to load all environment and configuration settings.
-        """
-        self.SQLDB = {
-            "SQL_USER": os.getenv("SQL_USER"),
-            "SQL_PASSWORD": os.getenv("SQL_PASSWORD"),
-            "SQL_HOST": os.getenv("SQL_HOST"),
-            "SQL_DATABASE_NAME": os.getenv("SQL_DATABASE_NAME"),
-            "SQL_PORT": os.getenv("SQL_PORT"),
-        }
-
-
-env = ENV()
 
 LOGIN_REDIRECT_URL = "/search/"
 LOGOUT_REDIRECT_URL = "/"

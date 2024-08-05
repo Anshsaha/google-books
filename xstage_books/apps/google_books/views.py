@@ -41,7 +41,7 @@ def search_books(request):
 @api_view(["POST"])
 def submit_recommendations(request):
     try:
-        services.submit_recommendations_service(request)
+        services.submit_recommendations_service(request.data, request.user.id)
         return custom_response(
             success=True,
             message="Book recommended successfully",

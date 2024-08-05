@@ -9,7 +9,16 @@ from apps.google_books.models import BookRecommendation
 GOOGLE_BOOKS_API_URL = os.getenv("GOOGLE_BOOKS_API_URL")
 
 
-def fetch_books(query, max_results=10):
+def fetch_books(query: str, max_results: int = 10) -> list:
+    """This function fetches all the results according to the query
+
+    Args:
+        query (str): search keyword given by the user.
+        max_results (int, optional): Defaults to 10.
+
+    Returns:
+        list: Metadata of all the resultant books.
+    """
     params = {
         "q": query,
         "maxResults": max_results,
@@ -22,15 +31,26 @@ def fetch_books(query, max_results=10):
     return response.json().get("items", [])
 
 
-def submit_recommendations_service(request):
+def submit_recommendations_service(data: dict, user_id: int) -> None:
+    """This function creates a record of recommendation given by the user
+
+    Args:
+        data (dict): metadata of the books recommended by the user.
+        user_id (int): user id
+    """
     BookRecommendation.objects.create(
-        title=request.data["title"],
-        author=request.data["author"],
-        user_id=request.user.id,
+        title=data["title"],
+        author=data["author"],
+        user_id=user_id,
     )
 
 
-def get_recommendations_service():
+def get_recommendations_service() -> list:
+    """This function gets the overall recommendations data.
+
+    Returns:
+        list: metadata of all the recommendations
+    """
     recommendations = BookRecommendation.objects.all().order_by("-created_at")
     book_details = []
     for rec in recommendations:
@@ -50,14 +70,22 @@ def get_recommendations_service():
     return book_details
 
 
-def fetch_book_details(title, author):
-    print(title, author)
+def fetch_book_details(title: str, author: str) -> list:
+    """This function fetches the data from google books api
+    according to the records existing in the database.
+
+    Args:
+        title (str): title of the book
+        author (str): author of the book
+
+    Returns:
+        list: metadata of each book
+    """
     params = {
         "q": f"intitle:{title}+inauthor:{author}",
         "key": os.getenv("API_KEY"),
     }
     response = requests.get(GOOGLE_BOOKS_API_URL, params=params)
-    print(response.status_code)
     data = response.json()
     items = data.get("items", [])
 
