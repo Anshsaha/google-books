@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .recommendations-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .book {
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #fff;
+            display: flex;
+            align-items: flex-start;
+        }
+        .book img {
+            margin-right: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'search_books' %}">My Book App</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="recommendations-container">
+        <h2>Recommended Books:</h2>
+        {% if recommendations %}
+            {% for rec in recommendations %}
+            <div class="book">
+                <img src="{{ rec.google_books_info.volumeInfo.imageLinks.smallThumbnail }}" alt="{{ rec.google_books_info.volumeInfo.title }} thumbnail">
+                <div>
+                    <h3>{{ rec.google_books_info.volumeInfo.title }}</h3>
+                    <p><strong>Authors:</strong> {{ rec.google_books_info.volumeInfo.authors|default:"N/A"|join:", " }}</p>
+                    <p><strong>Published Date:</strong> {{ rec.google_books_info.volumeInfo.publishedDate|default:"N/A" }}</p>
+                    <p><strong>Description:</strong> {{ rec.google_books_info.volumeInfo.description|default:"N/A" }}</p>
+                    <p><strong>Recommended By:</strong> {{ rec.user_name }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No recommendations available.</p>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
