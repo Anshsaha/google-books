@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-from dataclasses import dataclass
 from dotenv import load_dotenv
 from pathlib import Path
 

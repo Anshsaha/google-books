@@ -5,7 +5,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # path("", views.HealthCheckView.as_view(), name="health-check"),
     path("", views.login, name="login"),
     path("search/", views.search_books, name="search_books"),
     path(
@@ -13,7 +12,6 @@ urlpatterns = [
         views.submit_recommendations,
         name="submit_recommendation",
     ),
-    # path("thank-you/", thank_you_view, name="thank_you"),
     path(
         "get-recommendations/",
         views.get_book_recommendations,
